@@ -1,0 +1,12 @@
+//docker-compose to run main.go and deploy the app
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/app
+    command: go run main.go
