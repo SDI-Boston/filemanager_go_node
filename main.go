@@ -1,19 +1,22 @@
 package main
 
 import (
+	"github.com/SDI-Boston/filemanager_go_node/controller"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	//"tu_paquete/grpc" // Importa la lógica del servidor gRPC
 )
 
 func main() {
-	// Configuración del servidor Echo
+
+	// Configuración del servidor Echo para las posteriores rutas
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
 	// Rutas del servidor
-	//e.POST("/upload", grpc.UploadHandler) // Test de la ruta y su metodo
+
+	// Test de conexión con el servidor NFS
+	controller.TestNFSConnection()
 
 	// Inicia el servidor Echo
 	e.Logger.Fatal(e.Start(":5000"))

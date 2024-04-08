@@ -1,4 +1,3 @@
-//docker-compose to run main.go and deploy the app
 version: '3.8'
 services:
   app:
