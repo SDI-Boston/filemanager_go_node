@@ -10,7 +10,7 @@ import (
 func TestNFSConnection() error {
 	ip := "192.168.0.1"
 	// Check NFS server
-	err := PingNFS(ip)
+	err := pingNFS(ip)
 	if err != nil {
 		return fmt.Errorf("failed to connect to NFS server (Probably unreachable): %w", err)
 	}
@@ -36,7 +36,7 @@ func TestNFSConnection() error {
 }
 
 // Ping the NFS server to check if it is reachable
-func PingNFS(ip string) error {
+func pingNFS(ip string) error {
 	pingCmd := exec.Command("ping", "-c", "1", ip)
 	err := pingCmd.Run()
 	if err != nil {
