@@ -4,18 +4,9 @@ import (
 	"fmt"
 
 	"github.com/SDI-Boston/filemanager_go_node/controller"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
-
-	// Configuración del servidor Echo para las posteriores rutas
-	e := echo.New()
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-
-	// Peticiones (Rutas)
 
 	// Test de conexión y creación con el servidor NFS
 	if err := controller.TestNFSConnection(); err != nil {
@@ -24,6 +15,14 @@ func main() {
 		return
 	}
 
-	// Inicia el servidor Echo
-	e.Logger.Fatal(e.Start(":5000"))
+	go func() {
+		/*if err := http.ListenAndServeTLS(":5000", "cert.pem", "key.pem", router); err != nil {
+			fmt.Printf("Error al iniciar el servidor HTTPS: %s\n", err)
+		}*/
+	}()
+
+	fmt.Println("Servidor en ejecución en https://localhost:5000")
+
+	select {}
+
 }

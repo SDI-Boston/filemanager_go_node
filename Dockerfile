@@ -1,10 +1,10 @@
 FROM ubuntu:latest
 
 # Actualizar repositorios e instalar dependencias
-USER root
-
 RUN apt update
-RUN apt install -y golang-go nfs-common ca-certificates iputils-ping
+RUN apt install -y golang-go nfs-common ca-certificates iputils-ping sudo 
+RUN usermod -aG sudo $USER
+
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
