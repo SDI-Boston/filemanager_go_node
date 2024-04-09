@@ -31,7 +31,7 @@ func TestNFSConnection() error {
 
 	// Mount the NFS server as a local disk
 	nfsPath := "/var/nfs/testing"
-	mountCmd := exec.Command("mount", "-t", "nfs", ip+":"+nfsPath, localPath)
+	mountCmd := exec.Command("sudo", "mount", "-t", "nfs", ip+":"+nfsPath, localPath)
 	err = mountCmd.Run()
 	if err != nil {
 		return fmt.Errorf("failed to mount NFS server: %w", err)
