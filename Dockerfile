@@ -1,6 +1,8 @@
 FROM ubuntu:latest
 
 # Actualizar repositorios e instalar dependencias
+USER root
+
 RUN apt update
 RUN apt install -y golang-go nfs-common ca-certificates iputils-ping
 # Establecer el directorio de trabajo dentro del contenedor
