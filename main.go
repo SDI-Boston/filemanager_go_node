@@ -12,7 +12,7 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	// Rutas del servidor
+	// Peticiones (Rutas)
 
 	// Test de conexión y creación con el servidor NFS
 	/*if err := controller.TestNFSConnection(); err != nil {

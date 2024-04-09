@@ -17,14 +17,13 @@ func TestNFSConnection() error {
 	}
 
 	// Verificar si localPath existe, y si no, crearlo
-	localPath := "./nfs"
+	localPath := "./nfsMnt"
 	if _, err := os.Stat(localPath); os.IsNotExist(err) {
 		if err := os.MkdirAll(localPath, 0755); err != nil {
 			return fmt.Errorf("failed to create directory %s: %w", localPath, err)
 		}
 	}
 
-	// Cambiar el propietario y los permisos del directorio de montaje
 	if err := changeDirectoryPermissions(localPath); err != nil {
 		return fmt.Errorf("failed to change directory permissions: %w", err)
 	}
@@ -59,7 +58,7 @@ func pingNFS(ip string) error {
 	return nil
 }
 
-// Cambiar el propietario y los permisos del directorio
+// Cambiar el propietario y los permisos del directorio (por precaución)
 func changeDirectoryPermissions(path string) error {
 	currentUser, err := user.Current()
 	if err != nil {
