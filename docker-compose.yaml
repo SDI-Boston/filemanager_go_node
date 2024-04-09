@@ -8,4 +8,5 @@ services:
       - 5000:5000
     volumes:
       - .:/app
+    #network_mode: host
     command: go run main.go

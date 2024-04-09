@@ -1,11 +1,8 @@
 FROM ubuntu:latest
 
 # Actualizar repositorios e instalar dependencias
-RUN apt-get update \
-    && apt-get install -y \
-        golang nfs-common\
-    && rm -rf /var/lib/apt/lists/*
-
+RUN apt update
+RUN apt install -y golang-go nfs-common ca-certificates iputils-ping
 # Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
