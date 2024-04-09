@@ -8,7 +8,7 @@ import (
 
 // Test connection to NFS server
 func TestNFSConnection() error {
-	ip := "172.24.174.128"
+	ip := "192.168.1.11"
 	// Check NFS server
 	err := pingNFS(ip)
 	if err != nil {
