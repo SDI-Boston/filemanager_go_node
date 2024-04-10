@@ -17,15 +17,12 @@ COPY . .
 # Builds the current project to a binary file
 RUN GOOS=linux go build -o ./out/nodebin .
 
-# lightweight alpine image to run the server 
-FROM alpine:latest
+#FROM alpine:latest GO PACKAGE ERROR
+FROM golang:alpine
 
 # root ONLY FOR TESTING MOUNT PERMISSIONS
 USER root 
-RUN apk add ca-certificates nfs-utils iputils
-RUN set -ex && apk --no-cache add sudo
-RUN echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
-RUN adduser $USER wheel
+RUN set -ex && apk update && apk upgrade && apk --no-cache add ca-certificates nfs-utils iputils sudo
 
 # Copies the binary file from the BUILD container to /app folder
 COPY --from=build /tmp/app/out/nodebin /app/nodebin
