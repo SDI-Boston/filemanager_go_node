@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"os/user"
 )
 
 // Test connection to NFS server
@@ -21,10 +20,6 @@ func TestNFSConnection(ip string) error {
 		if err := os.MkdirAll(localPath, 0755); err != nil {
 			return fmt.Errorf("failed to create directory %s: %w", localPath, err)
 		}
-	}
-
-	if err := changeDirectoryPermissions(localPath); err != nil {
-		return fmt.Errorf("failed to change directory permissions: %w", err)
 	}
 
 	// Mount the NFS server as a local disk
@@ -52,28 +47,6 @@ func pingNFS(ip string) error {
 	err := pingCmd.Run()
 	if err != nil {
 		return fmt.Errorf("failed to ping NFS server: %w", err)
-	}
-
-	return nil
-}
-
-// Cambiar el propietario y los permisos del directorio (por precaución)
-func changeDirectoryPermissions(path string) error {
-	currentUser, err := user.Current()
-	if err != nil {
-		return err
-	}
-
-	chownCmd := exec.Command("chown", "-R", currentUser.Username+":", path)
-	err = chownCmd.Run()
-	if err != nil {
-		return fmt.Errorf("failed to change directory owner: %w", err)
-	}
-
-	chmodCmd := exec.Command("chmod", "-R", "755", path)
-	err = chmodCmd.Run()
-	if err != nil {
-		return fmt.Errorf("failed to change directory permissions: %w", err)
 	}
 
 	return nil
