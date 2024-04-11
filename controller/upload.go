@@ -3,32 +3,12 @@ package controller
 import (
 	"fmt"
 	"os"
-	"os/exec"
 )
 
 // Test connection to NFS server
-func TestNFSConnection(ip string) error {
-	// Check NFS server
-	err := pingNFS(ip)
-	if err != nil {
-		return fmt.Errorf("failed to connect to NFS server (Probably unreachable): %w", err)
-	}
+func TestNFSConnection() error {
 
-	// Verificar si localPath existe, y si no, crearlo
-	localPath := "./nfsMnt"
-	if _, err := os.Stat(localPath); os.IsNotExist(err) {
-		if err := os.MkdirAll(localPath, 0755); err != nil {
-			return fmt.Errorf("failed to create directory %s: %w", localPath, err)
-		}
-	}
-
-	// Mount the NFS server as a local disk
-	nfsPath := "/var/nfs/testing"
-	mountCmd := exec.Command("sudo", "mount", "-t", "nfs", ip+":"+nfsPath, localPath)
-	err = mountCmd.Run()
-	if err != nil {
-		return fmt.Errorf("failed to mount NFS server: %w", err)
-	}
+	localPath := "/mnt/nfs"
 
 	testFilePath := localPath + "/test.txt"
 	testFile, err := os.Create(testFilePath)
@@ -42,12 +22,12 @@ func TestNFSConnection(ip string) error {
 }
 
 // Ping the NFS server to check if it is reachable
-func pingNFS(ip string) error {
-	pingCmd := exec.Command("ping", "-c", "4", ip)
+/*func pingNFS(ip string) error {
+	pingCmd := exec.Command("ping", "-c", "3", ip)
 	err := pingCmd.Run()
 	if err != nil {
 		return fmt.Errorf("failed to ping NFS server: %w", err)
 	}
 
 	return nil
-}
+}*/

@@ -8,6 +8,11 @@ services:
       - 5000:5000
     volumes:
       - .:/app
+      - type: volume
+        source: nfsVolume
+        target: /mnt/nfs
+        volume:
+          nocopy: true
     # If the container goes down, it will restart
     restart: "always"
     # Common network bridge
@@ -16,3 +21,10 @@ services:
     command: go run main.go
 networks: 
     node.network:
+
+volumes:
+  nfsVolume:
+    driver_opts:
+      type: "nfs"
+      o: "addr=10.153.62.140,nolock,soft,rw"
+      device: ":/var/nfs/testing"

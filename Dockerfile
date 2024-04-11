@@ -17,12 +17,12 @@ COPY . .
 # Builds the current project to a binary file
 RUN GOOS=linux go build -o ./out/nodebin .
 
-#FROM alpine:latest GO PACKAGE ERROR
+#FROM alpine:latest (GO PACKAGE ERROR)
 FROM golang:alpine
 
 # root ONLY FOR TESTING MOUNT PERMISSIONS
 USER root 
-RUN set -ex && apk update && apk upgrade && apk --no-cache add ca-certificates nfs-utils iputils sudo
+RUN set -ex && apk update && apk upgrade && apk --no-cache add ca-certificates 
 
 # Copies the binary file from the BUILD container to /app folder
 COPY --from=build /tmp/app/out/nodebin /app/nodebin
