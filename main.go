@@ -24,6 +24,6 @@ func main() {
 
 	fmt.Println("Servidor en ejecución en https://localhost:5000")*/
 
-	select {}
+	//select {}
 
 }
