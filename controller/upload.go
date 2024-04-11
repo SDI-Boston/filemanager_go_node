@@ -8,8 +8,7 @@ import (
 )
 
 // Test connection to NFS server
-func TestNFSConnection() error {
-	ip := "10.153.62.30"
+func TestNFSConnection(ip string) error {
 	// Check NFS server
 	err := pingNFS(ip)
 	if err != nil {

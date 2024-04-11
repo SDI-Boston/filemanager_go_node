@@ -9,7 +9,8 @@ import (
 func main() {
 
 	// Test de conexión y creación con el servidor NFS
-	if err := controller.TestNFSConnection(); err != nil {
+	ip := "10.153.62.140"
+	if err := controller.TestNFSConnection(ip); err != nil {
 		// Manejar el error aquí, por ejemplo, imprimirlo y salir
 		fmt.Println("Error:", err)
 		return
