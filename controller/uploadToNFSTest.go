@@ -20,14 +20,3 @@ func TestNFSConnection() error {
 	fmt.Println("Successfully connected to NFS server and created test file in " + testFilePath)
 	return nil
 }
-
-// Ping the NFS server to check if it is reachable
-/*func pingNFS(ip string) error {
-	pingCmd := exec.Command("ping", "-c", "3", ip)
-	err := pingCmd.Run()
-	if err != nil {
-		return fmt.Errorf("failed to ping NFS server: %w", err)
-	}
-
-	return nil
-}*/
