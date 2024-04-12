@@ -1,7 +1,7 @@
 syntax = "proto3";
 package proto;
 
-option go_package = "github.com/SDI-Boston/filemanager_go_node";
+option go_package = "./;upload";
 
 message FileUploadRequest {
     string file_id = 1;
@@ -11,7 +11,7 @@ message FileUploadRequest {
 
 message FileUploadResponse {
     string file_id = 1;
-    string status = 2;
+    string file_route = 2;
 }
 
 service FileService {
