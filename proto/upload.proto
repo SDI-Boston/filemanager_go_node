@@ -1,7 +1,7 @@
 syntax = "proto3";
 package proto;
 
-option go_package = "./;upload";
+option go_package = "./;uploadpb";
 
 message FileUploadRequest {
     string file_id = 1;
@@ -11,7 +11,7 @@ message FileUploadRequest {
 
 message FileUploadResponse {
     string file_id = 1;
-    string file_route = 2;
+    repeated string urls = 2;
 }
 
 service FileService {
