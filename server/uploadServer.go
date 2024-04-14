@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"os"
 
@@ -11,7 +12,6 @@ import (
 type FileService struct{}
 
 func (s *FileService) Upload(ctx context.Context, req *pb.FileUploadRequest) (*pb.FileUploadResponse, error) {
-
 	// Subir archivo
 	err := uploadToNFS(req)
 	if err != nil {
@@ -43,8 +43,14 @@ func uploadToNFS(req *pb.FileUploadRequest) error {
 	}
 	defer fileUpload.Close()
 
-	// Escribir el contenido del archivo binario en el archivo
-	_, err = fileUpload.Write(req.BinaryFile)
+	// Decodificar el contenido del binario en base64
+	decodedContent, err := base64.StdEncoding.DecodeString(string(req.BinaryFile))
+	if err != nil {
+		return fmt.Errorf("failed to decode binary content: %w", err)
+	}
+
+	// Escribir el contenido decodificado en el archivo
+	_, err = fileUpload.Write(decodedContent)
 	if err != nil {
 		return fmt.Errorf("failed to write binary content to file: %w", err)
 	}
