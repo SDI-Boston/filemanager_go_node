@@ -1,7 +1,6 @@
 package server
 
 import (
-	"context"
 	"encoding/base64"
 	"fmt"
 	"os"
@@ -9,21 +8,34 @@ import (
 	pb "github.com/SDI-Boston/filemanager_go_node/proto"
 )
 
-type FileService struct{}
+type FileService struct {
+	pb.UnimplementedFileServiceServer
+}
 
-func (s *FileService) Upload(ctx context.Context, req *pb.FileUploadRequest) (*pb.FileUploadResponse, error) {
-	// Subir archivo
-	err := uploadToNFS(req)
+func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
+	// Leer el request desde el flujo de datos
+	req, err := stream.Recv()
 	if err != nil {
-		return nil, fmt.Errorf("failed to upload file to NFS: %w", err)
+		return fmt.Errorf("failed to receive upload request: %w", err)
+	}
+
+	// Subir archivo
+	err = uploadToNFS(req)
+	if err != nil {
+		return fmt.Errorf("failed to upload file to NFS: %w", err)
 	}
 
 	// Respuesta
 	filePath := fmt.Sprintf("/mnt/nfs/%s/%s", req.OwnerId, req.FileId)
-	return &pb.FileUploadResponse{
+	err = stream.SendAndClose(&pb.FileUploadResponse{
 		FileId: req.FileId,
 		Urls:   []string{filePath},
-	}, nil
+	})
+	if err != nil {
+		return fmt.Errorf("failed to send upload response: %w", err)
+	}
+
+	return nil
 }
 
 func uploadToNFS(req *pb.FileUploadRequest) error {
