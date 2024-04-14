@@ -51,11 +51,11 @@ func uploadToNFS(req *pb.FileUploadRequest) error {
 	filePath := userPath + "/" + req.FileId
 	fileUpload, err := os.Create(filePath)
 	if err != nil {
-		return fmt.Errorf("failed to create test file: %w", err)
+		return fmt.Errorf("failed to upload file: %w", err)
 	}
 	defer fileUpload.Close()
 
-	// Decodificar el contenido del binario en base64
+	// Decodificar el contenido del binario que viene en base64
 	decodedContent, err := base64.StdEncoding.DecodeString(string(req.BinaryFile))
 	if err != nil {
 		return fmt.Errorf("failed to decode binary content: %w", err)

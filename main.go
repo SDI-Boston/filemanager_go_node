@@ -4,6 +4,7 @@ import (
 	"log"
 	"net"
 
+	"github.com/SDI-Boston/filemanager_go_node/client"
 	pb "github.com/SDI-Boston/filemanager_go_node/proto"
 	"github.com/SDI-Boston/filemanager_go_node/server"
 	"google.golang.org/grpc"
@@ -27,7 +28,6 @@ func main() {
 
 	log.Println("Server started on port :50051")
 
-	// Mantener el servidor en ejecución
-	select {}
+	client.UploadClientFile()
 
 }
