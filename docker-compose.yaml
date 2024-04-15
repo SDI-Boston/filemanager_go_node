@@ -26,7 +26,7 @@ services:
 
 networks: 
   node.network:
-    driver: bridge
+    #driver: bridge
 
 volumes:
   nfsVolume:
