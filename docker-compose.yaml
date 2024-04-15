@@ -32,8 +32,8 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: addr=192.168.1.16,rw,nfsvers=4
-      device: ":/var/nfs/testing"
+      o: addr=127.0.0.1,rw,nfsvers=4
+      device: ":/var/nfs/files"
 
 networks: 
   node.network:
