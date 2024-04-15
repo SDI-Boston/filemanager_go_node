@@ -13,7 +13,7 @@ import (
 )
 
 func UploadClientFile() {
-	serverAddr := "localhost:80" // No necesitas un puntero aquí
+	serverAddr := "localhost:80"
 	filePath := "./test/grpc.txt"
 	ownerID := "1"
 

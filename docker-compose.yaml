@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   node:
     build:
@@ -14,8 +14,7 @@ services:
         volume:
           nocopy: true
     restart: "always"
-    networks: 
-      - "node.network"
+    network_mode: host  
 
   nginx:
     image: nginx:latest
@@ -25,8 +24,7 @@ services:
       - node
     ports: 
       - "80:80"
-    networks: 
-      - "node.network"
+    network_mode: host  
 
 networks: 
   node.network:
@@ -35,5 +33,5 @@ volumes:
   nfsVolume:
     driver_opts:
       type: "nfs"
-      o: "addr=192.168.1.12,nolock,soft,rw"
+      o: "addr=10.153.62.77,nolock,soft,rw"
       device: ":/var/nfs/testing"
