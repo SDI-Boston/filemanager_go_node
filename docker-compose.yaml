@@ -37,5 +37,5 @@ volumes:
   nfsVolume:
     driver_opts:
       type: "nfs"
-      o: "addr=192.168.1.16,nolock,soft,rw"
+      o: "addr=192.168.1.16,nolock,soft,nfsvers=4"
       device: ":/var/nfs/testing"
