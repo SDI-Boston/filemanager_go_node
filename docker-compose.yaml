@@ -12,6 +12,8 @@ services:
     restart: always
     networks:
       - node.network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   nginx:
     image: nginx:latest
@@ -23,13 +25,11 @@ services:
       - "80:80"
     networks:
       - node.network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks: 
   node.network:
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.1.0/24
 
 volumes:
   nfsVolume:
