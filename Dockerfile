@@ -31,7 +31,7 @@ COPY --from=build /tmp/app/out/nodebin /app/nodebin
 WORKDIR "/app"
 
 # Exposes the 5000 port from the container
-EXPOSE 5000
+EXPOSE 50051
 
 # Runs the binary once the container starts
 CMD ["./nodebin"]
