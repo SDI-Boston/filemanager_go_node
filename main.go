@@ -4,6 +4,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"strconv"
 
 	pb "github.com/SDI-Boston/filemanager_go_node/proto"
 	"github.com/SDI-Boston/filemanager_go_node/routes"
@@ -12,35 +13,35 @@ import (
 )
 
 func main() {
-	// Levantar servidor gRPC
-	lis, err := net.Listen("tcp", ":50051")
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+	// Rango de puertos para escalabilidad
+	for port := 50051; port <= 50060; port++ {
+		lis, err := net.Listen("tcp", ":"+strconv.Itoa(port))
+		if err == nil {
+			// Found an available port, start serving
+			log.Printf("Server listening on port %d\n", port)
+			startServers(lis)
+			return
+		}
 	}
 
+	log.Fatalf("Failed to find available port in range")
+}
+
+func startServers(lis net.Listener) {
 	s := grpc.NewServer()
-
 	pb.RegisterFileServiceServer(s, &server.FileService{})
-
-	// Iniciar servidor gRPC en una goroutine
 	go func() {
 		if err := s.Serve(lis); err != nil {
-			log.Fatalf("failed to serve: %v", err)
+			log.Fatalf("failed to serve gRPC: %v", err)
 		}
 	}()
 
-	log.Println("Server started on port :50051")
+	log.Println("gRPC server started")
 
-	// Iniciar servidor HTTP para descargas
 	router := routes.NewRouter()
 	http.Handle("/", router)
-	log.Println("HTTP download server started on port :8080")
-	go func() {
-		if err := http.ListenAndServe(":8080", nil); err != nil {
-			log.Fatalf("HTTP server failed: %v", err)
-		}
-	}()
-
-	select {}
-
+	log.Println("HTTP server started")
+	if err := http.Serve(lis, nil); err != nil {
+		log.Fatalf("HTTP server failed: %v", err)
+	}
 }
