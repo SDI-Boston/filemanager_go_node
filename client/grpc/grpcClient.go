@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	pb "github.com/SDI-Boston/filemanager_go_node/proto"
+	pb "github.com/SDI-Boston/filemanager_go_node/client/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

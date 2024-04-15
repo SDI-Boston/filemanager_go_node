@@ -1,6 +1,8 @@
-package client
+package main
 
-import "github.com/SDI-Boston/filemanager_go_node/client"
+import (
+	client "github.com/SDI-Boston/filemanager_go_node/client/grpc"
+)
 
 func main() {
 	client.UploadClientFile()
