@@ -1,6 +1,6 @@
 module github.com/SDI-Boston/filemanager_go_node
 
-go 1.19 // version instalada en WSL 1.18, windows 1.22
+go 1.22 // version requerida en el server 1.19, windows 1.22
 
 require google.golang.org/grpc v1.63.2
 
