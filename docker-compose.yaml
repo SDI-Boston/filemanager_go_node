@@ -11,8 +11,7 @@ services:
       - nfsVolume:/mnt/nfs
     restart: always
     networks:
-      node.network:
-        ipv4_address: 192.168.1.100
+      - node.network
 
   nginx:
     image: nginx:latest
@@ -23,8 +22,7 @@ services:
     ports: 
       - "80:80"
     networks:
-      node.network:
-        ipv4_address: 192.168.1.101
+      - node.network
 
 networks: 
   node.network:
@@ -32,7 +30,6 @@ networks:
       driver: default
       config:
         - subnet: 192.168.1.0/24
-
 
 volumes:
   nfsVolume:
