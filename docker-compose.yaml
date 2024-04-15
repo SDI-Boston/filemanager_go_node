@@ -8,14 +8,11 @@ services:
       - "50051:50051"  
     volumes:
       - .:/app
-      - type: volume
-        source: nfsVolume
-        target: /mnt/nfs
-        volume:
-          nocopy: true
-    restart: "always"
+      - nfsVolume:/mnt/nfs
+    restart: always
     networks:
       - node.network  
+    network_mode: host
 
   nginx:
     image: nginx:latest
@@ -27,11 +24,11 @@ services:
       - "80:80"
     networks:
       - node.network 
+    network_mode: host
 
 networks: 
   node.network:
     driver: bridge
-    
 
 volumes:
   nfsVolume:
