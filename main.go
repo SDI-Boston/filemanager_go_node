@@ -18,7 +18,7 @@ func main() {
 		lis, err := net.Listen("tcp", ":"+strconv.Itoa(port))
 		if err == nil {
 			// Found an available port, start serving
-			log.Printf("Server listening on port %d\n", port)
+			log.Printf("gRPC Server UP")
 			startServers(lis)
 			return
 		}
