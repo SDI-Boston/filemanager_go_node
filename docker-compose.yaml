@@ -24,6 +24,7 @@ services:
   networks:
     - node.network
 
+
 volumes:
   nfsVolume:
     driver: local
