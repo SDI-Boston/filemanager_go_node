@@ -9,20 +9,16 @@ import (
 
 	pb "github.com/SDI-Boston/filemanager_go_node/proto"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func UploadClientFile() {
-	//serverAddr := "localhost:80"
 	serverAddr := "localhost:50051"
 	filePath := "./test/grpc.txt"
 	ownerID := "1"
 
-	// Crear las credenciales de transporte (en este caso, no seguras)
-	creds := credentials.NewTLS(nil)
-
-	// Establecer la conexión con las credenciales
-	conn, err := grpc.Dial(serverAddr, grpc.WithTransportCredentials(creds))
+	// Establishing an insecure connection
+	conn, err := grpc.Dial(serverAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Failed to dial server: %v", err)
 	}
@@ -30,34 +26,34 @@ func UploadClientFile() {
 
 	client := pb.NewFileServiceClient(conn)
 
-	// Leer el contenido del archivo
+	// Read the content of the file
 	fileContent, err := os.ReadFile(filePath)
 	if err != nil {
 		log.Fatalf("Failed to read file: %v", err)
 	}
 
-	// Codificar el contenido del archivo a base64
+	// Encode the file content to base64
 	encodedContent := base64.StdEncoding.EncodeToString(fileContent)
 
-	// Crear la solicitud de carga
+	// Create the upload request
 	uploadRequest := &pb.FileUploadRequest{
 		FileId:     "1",
 		OwnerId:    ownerID,
 		BinaryFile: []byte(encodedContent),
 	}
 
-	// Abrir un flujo para enviar el archivo
+	// Open a stream to send the file
 	stream, err := client.Upload(context.Background())
 	if err != nil {
 		log.Fatalf("Failed to open stream: %v", err)
 	}
 
-	// Enviar la solicitud de carga
+	// Send the upload request
 	if err := stream.Send(uploadRequest); err != nil {
 		log.Fatalf("Failed to send upload request: %v", err)
 	}
 
-	// Cerrar el flujo y recibir la respuesta
+	// Close the stream and receive the response
 	response, err := stream.CloseAndRecv()
 	if err != nil {
 		log.Fatalf("Failed to receive response: %v", err)
