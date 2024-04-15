@@ -15,7 +15,7 @@ import (
 func UploadClientFile() {
 	serverAddr := "localhost:50051"
 	filePath := "./test/grpc.txt"
-	ownerID := "1"
+	ownerID := "owner1"
 
 	// Establishing an insecure connection
 	conn, err := grpc.Dial(serverAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -37,7 +37,7 @@ func UploadClientFile() {
 
 	// Create the upload request
 	uploadRequest := &pb.FileUploadRequest{
-		FileId:     "1",
+		FileId:     "file1",
 		OwnerId:    ownerID,
 		BinaryFile: []byte(encodedContent),
 	}
