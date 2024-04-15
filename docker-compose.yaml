@@ -30,7 +30,6 @@ services:
 
 networks: 
   node.network:
-    external: true  # Define la red como externa para permitir la comunicación con el host
     driver: bridge
     
 
