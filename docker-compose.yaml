@@ -13,6 +13,8 @@ services:
       - nfsVolume:/mnt/nfs
     networks:
       - node.network
+    deploy:
+        replicas: 10
 
   nginx:
     image: nginx:latest
