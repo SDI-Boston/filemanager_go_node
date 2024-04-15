@@ -14,6 +14,8 @@ services:
         volume:
           nocopy: true
     restart: "always"
+    networks:
+      - node.network  
 
   nginx:
     image: nginx:latest
@@ -23,9 +25,12 @@ services:
       - node
     ports: 
       - "80:80"
+    networks:
+      - node.network 
 
 networks: 
   node.network:
+    external: true  # Define la red como externa para permitir la comunicación con el host
 
 volumes:
   nfsVolume:
