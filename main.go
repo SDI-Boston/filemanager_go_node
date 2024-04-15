@@ -3,9 +3,10 @@ package main
 import (
 	"log"
 	"net"
+	"net/http"
 
-	//"github.com/SDI-Boston/filemanager_go_node/client"
 	pb "github.com/SDI-Boston/filemanager_go_node/proto"
+	"github.com/SDI-Boston/filemanager_go_node/routes"
 	"github.com/SDI-Boston/filemanager_go_node/server"
 	"google.golang.org/grpc"
 )
@@ -30,7 +31,15 @@ func main() {
 
 	log.Println("Server started on port :50051")
 
-	//client.UploadClientFile()
+	// Iniciar servidor HTTP para descargas
+	router := routes.NewRouter()
+	http.Handle("/", router)
+	log.Println("HTTP download server started on port :8080")
+	go func() {
+		if err := http.ListenAndServe(":8080", nil); err != nil {
+			log.Fatalf("HTTP server failed: %v", err)
+		}
+	}()
 
 	select {}
 
