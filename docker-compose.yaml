@@ -8,11 +8,7 @@ services:
       - "50051:50051"  
     volumes:
       - .:/app
-      - type: volume
-        source: nfsVolume
-        target: /mnt/nfs
-        volume:
-          nocopy: true
+      - nfsVolume:/mnt/nfs
     networks:
       - node.network
 
@@ -34,6 +30,6 @@ volumes:
   nfsVolume:
     driver: local
     driver_opts:
-      type: "nfs"
-      o: "addr=192.168.1.16,rw,nfsvers=4"
+      type: nfs
+      o: addr=192.168.1.16,rw,nfsvers=4
       device: ":/var/nfs/testing"
