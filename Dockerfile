@@ -1,15 +1,27 @@
-FROM ubuntu:latest
+# syntax=docker/dockerfile:1
 
-# Actualizar repositorios e instalar dependencias
-RUN apt update
-RUN apt install -y golang-go nfs-common ca-certificates 
-# Establecer el directorio de trabajo dentro del contenedor
+FROM golang:1.19
+
+# Set destination for COPY
 WORKDIR /app
 
-# Copiar el código fuente de la aplicación
-COPY . .
+# Download Go modules
+COPY go.mod go.sum ./
+RUN go mod download
 
-EXPOSE 50051
+# Copy the source code. Note the slash at the end, as explained in
+# https://docs.docker.com/reference/dockerfile/#copy
+COPY *.go ./
 
-# Comando para ejecutar la aplicación
-CMD ["go", "run", "main.go"]
+# Build
+RUN CGO_ENABLED=0 GOOS=linux go build -o /file-manager-node
+
+# Optional:
+# To bind to a TCP port, runtime parameters must be supplied to the docker command.
+# But we can document in the Dockerfile what ports
+# the application is going to listen on by default.
+# https://docs.docker.com/reference/dockerfile/#expose
+EXPOSE 8080
+
+# Run
+CMD ["/file-manager-node"]
