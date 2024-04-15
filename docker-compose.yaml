@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "50051"
+      - "50051:50051"  
     volumes:
       - .:/app
       - type: volume
@@ -16,7 +16,6 @@ services:
     restart: "always"
     networks: 
       - "node.network"
-    command: go run main.go
 
   nginx:
     image: nginx:latest
