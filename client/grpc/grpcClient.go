@@ -13,7 +13,7 @@ import (
 )
 
 func UploadClientFile() {
-	serverAddr := "172.171.240.20:50051/grpc"
+	serverAddr := "172.171.240.20:80"
 	filePath := "./grpc.txt"
 	ownerID := "owner1"
 
