@@ -26,7 +26,7 @@ func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
 	}
 
 	// Respuesta
-	filePath := fmt.Sprintf("172.171.240.20/%s/%s", req.OwnerId, req.FileId)
+	filePath := fmt.Sprintf("172.171.240.20/files/%s/%s", req.OwnerId, req.FileId)
 	err = stream.SendAndClose(&pb.FileUploadResponse{
 		FileId: req.FileId,
 		Urls:   []string{filePath},
