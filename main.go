@@ -27,7 +27,7 @@ func main() {
 	defer httpListener.Close()
 
 	// Iniciar servidor gRPC
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(grpc.MaxRecvMsgSize(1000 * 1024 * 1024))
 	pb.RegisterFileServiceServer(grpcServer, &server.FileService{})
 	log.Println("gRPC server started")
 	go func() {

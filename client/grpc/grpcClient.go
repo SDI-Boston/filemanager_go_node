@@ -16,11 +16,11 @@ import (
 
 func UploadClientFile() {
 	serverAddr := "node.eastus.cloudapp.azure.com:5000"
-	filePath := "./grpc.txt"
+	filePath := "./Kojiro.png"
 	ownerID := "owner1"
 
 	// Establishing an insecure connection
-	conn, err := grpc.Dial(serverAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(serverAddr, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(1000*1024*1024)))
 	if err != nil {
 		log.Fatalf("Failed to dial server: %v", err)
 	}
