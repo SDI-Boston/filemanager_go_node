@@ -20,7 +20,7 @@ func UploadClientFile() {
 	ownerID := "owner1"
 
 	// Establishing an insecure connection
-	conn, err := grpc.Dial(serverAddr, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(1000*1024*1024)))
+	conn, err := grpc.Dial(serverAddr, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(1024*1024*1024)))
 	if err != nil {
 		log.Fatalf("Failed to dial server: %v", err)
 	}
