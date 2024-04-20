@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	pb "github.com/SDI-Boston/filemanager_go_node/client/proto"
 	"google.golang.org/grpc"
@@ -35,11 +36,15 @@ func UploadClientFile() {
 	// Encode the file content to base64
 	encodedContent := base64.StdEncoding.EncodeToString(fileContent)
 
+	// Extract the file name with extension
+	fileName := filepath.Base(filePath)
+
 	// Create the upload request
 	uploadRequest := &pb.FileUploadRequest{
-		FileId:     "file1",
+		FileId:     "file1", 
 		OwnerId:    ownerID,
 		BinaryFile: []byte(encodedContent),
+		FileName:   fileName, 
 	}
 
 	// Open a stream to send the file
