@@ -80,10 +80,8 @@ func uploadToNFS(req *pb.FileUploadRequest) (string, error) {
 		}
 	}
 
-	// Extraer la extensión del nombre del archivo
-	fileExtension := filepath.Ext(req.FileName)
-
-	fileName := req.FileId + fileExtension
+	// Construir el nombre de archivo con la extensión
+	fileName := req.FileId + filepath.Ext(req.FileName)
 	filePath := filepath.Join(userPath, fileName)
 
 	fileUpload, err := os.Create(filePath)
@@ -106,3 +104,4 @@ func uploadToNFS(req *pb.FileUploadRequest) (string, error) {
 
 	return filePath, nil
 }
+
