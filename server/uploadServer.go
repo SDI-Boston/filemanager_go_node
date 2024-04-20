@@ -27,18 +27,18 @@ func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
 	}
 
 	// Subir archivo
-	_, err = uploadToNFS(req)
+	url, err := uploadToNFS(req)
 	if err != nil {
 		return fmt.Errorf("failed to upload file to NFS: %w", err)
 	}
 
-	// Construir la URL del archivo
-	fileURL := fmt.Sprintf("172.171.240.20/files/%s/%s", req.OwnerId, req.FileId)
+	// Construir URL completa
+	fullURL := fmt.Sprintf("172.171.240.20/files/%s", url)
 
 	// Respuesta
 	err = stream.SendAndClose(&pb.FileUploadResponse{
 		FileId: req.FileId,
-		Urls:   []string{fileURL},
+		Urls:   []string{fullURL},
 	})
 	if err != nil {
 		return fmt.Errorf("failed to send upload response: %w", err)
@@ -80,8 +80,10 @@ func uploadToNFS(req *pb.FileUploadRequest) (string, error) {
 		}
 	}
 
-	// Construir el nombre de archivo con la extensión
-	fileName := req.FileId + filepath.Ext(req.FileName)
+	// Extraer la extensión del nombre del archivo
+	fileExtension := filepath.Ext(req.FileName)
+
+	fileName := req.FileId + fileExtension
 	filePath := filepath.Join(userPath, fileName)
 
 	fileUpload, err := os.Create(filePath)
@@ -104,4 +106,3 @@ func uploadToNFS(req *pb.FileUploadRequest) (string, error) {
 
 	return filePath, nil
 }
-
