@@ -27,13 +27,16 @@ func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
 	}
 
 	// Subir archivo
-	url, err := uploadToNFS(req)
+	uploadToNFS(req)
 	if err != nil {
 		return fmt.Errorf("failed to upload file to NFS: %w", err)
 	}
 
+	// Extraer la extensión del nombre del archivo
+	fileExtension := filepath.Ext(req.FileName)
+
 	// Construir URL completa
-	fullURL := fmt.Sprintf("172.171.240.20/files/%s", url)
+	fullURL := fmt.Sprintf("172.171.240.20/files/%s/%s%s", req.OwnerId, req.FileId, fileExtension)
 
 	// Respuesta
 	err = stream.SendAndClose(&pb.FileUploadResponse{
