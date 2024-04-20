@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
 	"log"
@@ -36,15 +37,21 @@ func UploadClientFile() {
 	// Encode the file content to base64
 	encodedContent := base64.StdEncoding.EncodeToString(fileContent)
 
+	// Calculate the SHA256 hash of the file content
+	hash := sha256.New()
+	hash.Write(fileContent)
+	fileHash := fmt.Sprintf("%x", hash.Sum(nil))
+
 	// Extract the file name with extension
 	fileName := filepath.Base(filePath)
 
-	// Create the upload request
+	// Create the upload request with the calculated hash
 	uploadRequest := &pb.FileUploadRequest{
 		FileId:     "file1", 
 		OwnerId:    ownerID,
 		BinaryFile: []byte(encodedContent),
-		FileName:   fileName, 
+		FileName:   fileName,
+		FileHash:   fileHash, // Include the calculated hash
 	}
 
 	// Open a stream to send the file
