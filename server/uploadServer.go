@@ -50,6 +50,9 @@ func validateHash(req *pb.FileUploadRequest) error {
 	hash.Write(req.BinaryFile)
 	calculatedHash := fmt.Sprintf("%x", hash.Sum(nil))
 
+	fmt.Println("Received Hash:", req.FileHash)
+	fmt.Println("Calculated Hash:", calculatedHash)
+
 	// Comparar el hash calculado con el hash proporcionado en la solicitud
 	if calculatedHash != req.FileHash {
 		return fmt.Errorf("file hash mismatch")
@@ -57,6 +60,7 @@ func validateHash(req *pb.FileUploadRequest) error {
 
 	return nil
 }
+
 
 func uploadToNFS(req *pb.FileUploadRequest) (string, error) {
 	// Si el usuario nunca ha creado un archivo, crear un directorio para el usuario
