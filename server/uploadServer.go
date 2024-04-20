@@ -32,10 +32,13 @@ func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
 		return fmt.Errorf("failed to upload file to NFS: %w", err)
 	}
 
+	// Construir la URL del archivo
+	fileURL := fmt.Sprintf("172.171.240.20/files/%s/%s", req.OwnerId, req.FileId)
+
 	// Respuesta
 	err = stream.SendAndClose(&pb.FileUploadResponse{
 		FileId: req.FileId,
-		Urls:   []string{filePath},
+		Urls:   []string{fileURL},
 	})
 	if err != nil {
 		return fmt.Errorf("failed to send upload response: %w", err)
@@ -66,8 +69,6 @@ func validateHash(req *pb.FileUploadRequest) error {
 
 	return nil
 }
-
-
 
 func uploadToNFS(req *pb.FileUploadRequest) (string, error) {
 	// Si el usuario nunca ha creado un archivo, crear un directorio para el usuario
