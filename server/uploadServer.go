@@ -27,7 +27,7 @@ func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
 	}
 
 	// Subir archivo
-	filePath, err := uploadToNFS(req)
+	_, err = uploadToNFS(req)
 	if err != nil {
 		return fmt.Errorf("failed to upload file to NFS: %w", err)
 	}
