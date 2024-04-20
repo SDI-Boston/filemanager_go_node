@@ -45,9 +45,15 @@ func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
 }
 
 func validateHash(req *pb.FileUploadRequest) error {
-	// Calcular el hash SHA256 del contenido del archivo
+	// Decodificar el contenido del binario que viene en base64
+	decodedContent, err := base64.StdEncoding.DecodeString(string(req.BinaryFile))
+	if err != nil {
+		return fmt.Errorf("failed to decode binary content: %w", err)
+	}
+
+	// Calcular el hash SHA256 del contenido decodificado del archivo
 	hash := sha256.New()
-	hash.Write(req.BinaryFile)
+	hash.Write(decodedContent)
 	calculatedHash := fmt.Sprintf("%x", hash.Sum(nil))
 
 	fmt.Println("Received Hash:", req.FileHash)
@@ -60,6 +66,7 @@ func validateHash(req *pb.FileUploadRequest) error {
 
 	return nil
 }
+
 
 
 func uploadToNFS(req *pb.FileUploadRequest) (string, error) {
