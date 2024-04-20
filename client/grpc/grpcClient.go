@@ -40,7 +40,7 @@ func UploadClientFile() {
 	// Calculate the SHA256 hash of the file content
 	hash := sha256.New()
 	hash.Write(fileContent)
-	fileHash := fmt.Sprintf("%x", hash.Sum(nil))
+	//fileHash := fmt.Sprintf("%x", hash.Sum(nil))
 
 	// Extract the file name with extension
 	fileName := filepath.Base(filePath)
@@ -51,7 +51,7 @@ func UploadClientFile() {
 		OwnerId:    ownerID,
 		BinaryFile: []byte(encodedContent),
 		FileName:   fileName,
-		FileHash:   fileHash, // Include the calculated hash
+		//FileHash:   fileHash, // Include the calculated hash
 	}
 
 	// Open a stream to send the file

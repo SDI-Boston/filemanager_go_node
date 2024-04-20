@@ -1,7 +1,7 @@
 package server
 
 import (
-	"crypto/sha256"
+	//"crypto/sha256"
 	"encoding/base64"
 	"fmt"
 	"os"
@@ -22,9 +22,11 @@ func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
 	}
 
 	// Validar hash
+	/*
 	if err := validateHash(req); err != nil {
 		return fmt.Errorf("hash validation failed: %w", err)
 	}
+	*/
 
 	// Subir archivo
 	uploadToNFS(req)
@@ -50,6 +52,7 @@ func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
 	return nil
 }
 
+/*
 func validateHash(req *pb.FileUploadRequest) error {
 	// Decodificar el contenido del binario que viene en base64
 	decodedContent, err := base64.StdEncoding.DecodeString(string(req.BinaryFile))
@@ -72,6 +75,7 @@ func validateHash(req *pb.FileUploadRequest) error {
 
 	return nil
 }
+*/
 
 func uploadToNFS(req *pb.FileUploadRequest) (string, error) {
 	// Si el usuario nunca ha creado un archivo, crear un directorio para el usuario
