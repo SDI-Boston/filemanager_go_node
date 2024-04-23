@@ -4,6 +4,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"time"
 
 	pb "github.com/SDI-Boston/filemanager_go_node/proto"
 	"github.com/SDI-Boston/filemanager_go_node/routes"
@@ -27,7 +28,10 @@ func main() {
 	defer httpListener.Close()
 
 	// Iniciar servidor gRPC
-	grpcServer := grpc.NewServer(grpc.MaxRecvMsgSize(1024 * 1024 * 1024))
+	grpcServer := grpc.NewServer(
+		grpc.MaxRecvMsgSize(1024*1024*1024),
+		grpc.ConnectionTimeout(time.Minute*5),
+	)
 	pb.RegisterFileServiceServer(grpcServer, &server.FileService{})
 	log.Println("gRPC server started")
 	go func() {

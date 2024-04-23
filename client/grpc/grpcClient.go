@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 
 	pb "github.com/SDI-Boston/filemanager_go_node/client/proto"
 	"google.golang.org/grpc"
@@ -17,10 +18,19 @@ import (
 func UploadClientFile() {
 	serverAddr := "node.eastus.cloudapp.azure.com:5000"
 	filePath := "./Kojiro.png"
-	ownerID := "owner1"
+	ownerID := "tester"
 
-	// Establishing an insecure connection
-	conn, err := grpc.Dial(serverAddr, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(1024*1024*1024)))
+	// Crear un contexto con timeout
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
+	defer cancel()
+
+	// Establecer la conexión utilizando DialContext
+	conn, err := grpc.DialContext(
+		ctx,
+		serverAddr,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithDefaultCallOptions(grpc.MaxCallRecvMsgSize(1024*1024*1024)),
+	)
 	if err != nil {
 		log.Fatalf("Failed to dial server: %v", err)
 	}
@@ -47,7 +57,7 @@ func UploadClientFile() {
 
 	// Create the upload request with the calculated hash
 	uploadRequest := &pb.FileUploadRequest{
-		FileId:     "file1", 
+		FileId:     "23721983",
 		OwnerId:    ownerID,
 		BinaryFile: []byte(encodedContent),
 		FileName:   fileName,
