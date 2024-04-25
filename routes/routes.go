@@ -8,5 +8,6 @@ import (
 func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/files/{userId}/{fileId}", controller.DownloadFileHandler).Methods("GET")
+	router.HandleFunc("/files_backup/{userId}/{fileId}", controller.DownloadFileHandler).Methods("GET")
 	return router
 }

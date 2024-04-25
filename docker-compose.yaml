@@ -11,10 +11,11 @@ services:
     volumes:
       - .:/app
       - nfsVolume:/mnt/nfs
+      - nfsBackupVolume:/mnt/nfs_backup
     networks:
       - node.network
     deploy:
-        replicas: 3
+        replicas: 5
 
   nginx:
     image: nginx:latest
@@ -35,6 +36,12 @@ volumes:
       type: nfs
       o: addr=127.0.0.1,rw,nfsvers=4
       device: ":/var/nfs/files"
+  nfsBackupVolume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=127.0.0.1,rw,nfsvers=4
+      device: ":/var/nfs/files_backup"
 
 networks: 
   node.network:

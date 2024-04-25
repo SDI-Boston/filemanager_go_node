@@ -23,9 +23,9 @@ func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
 
 	// Validar hash
 	/*
-	if err := validateHash(req); err != nil {
-		return fmt.Errorf("hash validation failed: %w", err)
-	}
+		if err := validateHash(req); err != nil {
+			return fmt.Errorf("hash validation failed: %w", err)
+		}
 	*/
 
 	// Subir archivo
@@ -37,13 +37,14 @@ func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
 	// Extraer la extensión del nombre del archivo
 	fileExtension := filepath.Ext(req.FileName)
 
-	// Construir URL completa
-	fullURL := fmt.Sprintf("172.171.240.20/files/%s/%s%s", req.OwnerId, req.FileId, fileExtension)
+	// ip
+	fullURL := fmt.Sprintf("207.248.81.74/files/%s/%s%s", req.OwnerId, req.FileId, fileExtension)
+	backupURL := fmt.Sprintf("207.248.81.74/files_backup/%s/%s%s", req.OwnerId, req.FileId, fileExtension)
 
 	// Respuesta
 	err = stream.SendAndClose(&pb.FileUploadResponse{
 		FileId: req.FileId,
-		Urls:   []string{fullURL},
+		Urls:   []string{fullURL, backupURL},
 	})
 	if err != nil {
 		return fmt.Errorf("failed to send upload response: %w", err)

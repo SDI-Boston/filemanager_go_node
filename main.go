@@ -14,20 +14,20 @@ import (
 
 func main() {
 	// Servidor gRPC
-	grpcListener, err := net.Listen("tcp", ":50051") // Utiliza un puerto específico para gRPC
+	grpcListener, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	defer grpcListener.Close()
 
 	// Servidor HTTP
-	httpListener, err := net.Listen("tcp", ":8080") // Utiliza un puerto específico para HTTP
+	httpListener, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	defer httpListener.Close()
 
-	// Iniciar servidor gRPC
+	// Iniciar servidor gRPC con timeout de 5 minutos y limite de 1GB
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(1024*1024*1024),
 		grpc.ConnectionTimeout(time.Minute*5),
@@ -40,7 +40,6 @@ func main() {
 		}
 	}()
 
-	// Iniciar servidor HTTP
 	router := routes.NewRouter()
 	http.Handle("/", router)
 	log.Println("HTTP server started")
