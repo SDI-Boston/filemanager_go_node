@@ -25,7 +25,7 @@ services:
       - node
     ports: 
       - "80:80"
-      - "50051:50051"
+      - "5000:5000"
     networks:
       - node.network
 
