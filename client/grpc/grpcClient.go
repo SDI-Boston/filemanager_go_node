@@ -17,7 +17,7 @@ import (
 
 func UploadClientFile() {
 	serverAddr := "207.248.81.74:3000"
-	filePath := "./Kojiro.png"
+	filePath := "./grpc.txt"
 	ownerID := "tester"
 
 	// Crear un contexto con timeout
