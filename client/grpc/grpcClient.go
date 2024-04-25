@@ -16,7 +16,7 @@ import (
 )
 
 func UploadClientFile() {
-	serverAddr := "node.eastus.cloudapp.azure.com:5000"
+	serverAddr := "207.248.81.74:3000"
 	filePath := "./Kojiro.png"
 	ownerID := "tester"
 
@@ -57,7 +57,7 @@ func UploadClientFile() {
 
 	// Create the upload request with the calculated hash
 	uploadRequest := &pb.FileUploadRequest{
-		FileId:     "23721983",
+		FileId:     "99",
 		OwnerId:    ownerID,
 		BinaryFile: []byte(encodedContent),
 		FileName:   fileName,
@@ -81,5 +81,6 @@ func UploadClientFile() {
 		log.Fatalf("Failed to receive response: %v", err)
 	}
 
-	fmt.Printf("File uploaded successfully. Path: %s\n", response.Urls[0])
+	// Print the response and the array of URLs
+	fmt.Printf("File uploaded successfully. Path: %s\n", response)
 }
