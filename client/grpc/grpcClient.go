@@ -15,7 +15,7 @@ import (
 )
 
 func UploadClientFile() {
-	serverAddr := "207.248.81.74:3000" // Dirección del servidor NGINX
+	serverAddr := "207.248.81.74:50051" // Dirección del servidor NGINX
 	filePath := "./grpc.txt"
 	ownerID := "tester"
 
