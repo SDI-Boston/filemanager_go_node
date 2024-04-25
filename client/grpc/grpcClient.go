@@ -17,7 +17,7 @@ import (
 func UploadClientFile() {
 	serverAddr := "127.0.0.1:50051"
 	filePath := "./grpc.txt"
-	ownerID := "tester"
+	ownerID := "valdi"
 
 	// Crear un contexto con timeout
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
