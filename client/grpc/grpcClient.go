@@ -16,7 +16,7 @@ import (
 )
 
 func UploadClientFile() {
-	serverAddr := "207.248.81.74:80"
+	serverAddr := "207.248.81.74:3000" // Dirección del servidor NGINX
 	filePath := "./grpc.txt"
 	ownerID := "tester"
 
@@ -65,7 +65,7 @@ func UploadClientFile() {
 	}
 
 	// Open a stream to send the file
-	stream, err := client.Upload(context.Background())
+	stream, err := client.Upload(ctx)
 	if err != nil {
 		log.Fatalf("Failed to open stream: %v", err)
 	}
