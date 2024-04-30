@@ -24,7 +24,7 @@ services:
     depends_on: 
       - node
     ports: 
-      - "8080:8080"
+      - "3000:3000"
       - "5000:5000"
     networks:
       - node.network
