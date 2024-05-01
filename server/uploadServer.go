@@ -38,8 +38,8 @@ func (s *FileService) Upload(stream pb.FileService_UploadServer) error {
 	fileExtension := filepath.Ext(req.FileName)
 
 	// ip
-	fullURL := fmt.Sprintf("207.248.81.74:3000/files/%s/%s%s", req.OwnerId, req.FileId, fileExtension)
-	backupURL := fmt.Sprintf("207.248.81.74:3000/files_backup/%s/%s%s", req.OwnerId, req.FileId, fileExtension)
+	fullURL := fmt.Sprintf("172.171.240.20:3000/files/%s/%s%s", req.OwnerId, req.FileId, fileExtension)
+	backupURL := fmt.Sprintf("172.171.240.20:3000/files_backup/%s/%s%s", req.OwnerId, req.FileId, fileExtension)
 	// Respuesta
 	err = stream.SendAndClose(&pb.FileUploadResponse{
 		FileId: req.FileId,

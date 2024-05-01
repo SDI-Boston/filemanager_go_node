@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   node:
     build:
@@ -26,7 +28,7 @@ services:
       - "5000:5000"
     networks:
       - node.network
-    
+
 
 volumes:
   nfsVolume:
@@ -44,6 +46,3 @@ volumes:
 
 networks: 
   node.network:
-    driver: bridge
-    driver_opts:
-      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
