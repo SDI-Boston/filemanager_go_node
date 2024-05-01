@@ -28,9 +28,7 @@ services:
       - "5000:5000"
     networks:
       - node.network
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    network_mode: "host" 
+    
 
 volumes:
   nfsVolume:
@@ -48,3 +46,6 @@ volumes:
 
 networks: 
   node.network:
+  driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
