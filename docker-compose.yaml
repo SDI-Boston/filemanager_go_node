@@ -15,7 +15,7 @@ services:
     networks:
       - node.network
     deploy:
-        replicas: 100
+        replicas: 2
 
   nginx:
     image: nginx:latest
