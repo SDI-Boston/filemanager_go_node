@@ -87,29 +87,54 @@ func uploadToNFS(req *pb.FileUploadRequest) (string, error) {
 		}
 	}
 
+	// Si el usuario nunca ha creado un archivo, crear un directorio de respaldo para el usuario
+	backupPath := fmt.Sprintf("/mnt/nfs_backup/%s", req.OwnerId)
+	if _, err := os.Stat(backupPath); os.IsNotExist(err) {
+		err := os.Mkdir(backupPath, 0755)
+		if err != nil {
+			return "", fmt.Errorf("failed to create backup user directory: %w", err)
+		}
+	}
+
 	// Extraer la extensión del nombre del archivo
 	fileExtension := filepath.Ext(req.FileName)
-
 	fileName := req.FileId + fileExtension
-	filePath := filepath.Join(userPath, fileName)
 
-	fileUpload, err := os.Create(filePath)
+	// Guardar el archivo en la ruta principal
+	filePath := filepath.Join(userPath, fileName)
+	err := saveFile(filePath, req.BinaryFile)
 	if err != nil {
 		return "", fmt.Errorf("failed to upload file: %w", err)
+	}
+
+	// Guardar el archivo en la ruta de respaldo
+	backupFilePath := filepath.Join(backupPath, fileName)
+	err = saveFile(backupFilePath, req.BinaryFile)
+	if err != nil {
+		return "", fmt.Errorf("failed to upload backup file: %w", err)
+	}
+
+	return filePath, nil
+}
+
+func saveFile(filePath string, binaryFile []byte) error {
+	fileUpload, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
 	}
 	defer fileUpload.Close()
 
 	// Decodificar el contenido del binario que viene en base64
-	decodedContent, err := base64.StdEncoding.DecodeString(string(req.BinaryFile))
+	decodedContent, err := base64.StdEncoding.DecodeString(string(binaryFile))
 	if err != nil {
-		return "", fmt.Errorf("failed to decode binary content: %w", err)
+		return fmt.Errorf("failed to decode binary content: %w", err)
 	}
 
 	// Escribir el contenido decodificado en el archivo
 	_, err = fileUpload.Write(decodedContent)
 	if err != nil {
-		return "", fmt.Errorf("failed to write binary content to file: %w", err)
+		return fmt.Errorf("failed to write binary content to file: %w", err)
 	}
 
-	return filePath, nil
+	return nil
 }
