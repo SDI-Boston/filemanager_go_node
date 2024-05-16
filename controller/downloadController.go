@@ -14,12 +14,18 @@ func DownloadFileHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	fileID := vars["fileId"]
 	userID := vars["userId"]
-	filePath := fmt.Sprintf("/mnt/nfs/%s/%s", userID, fileID)
 
-	file, err := os.Open(filePath)
+	// Intenta descargar desde la ruta principal primero
+	filePath := fmt.Sprintf("/mnt/nfs/%s/%s", userID, fileID)
+	file, err := downloadFile(filePath, w)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+		// Si no se pudo descargar desde la ruta principal, intenta descargar desde la ruta de respaldo
+		backupFilePath := fmt.Sprintf("/mnt/nfs_backup/%s/%s", userID, fileID)
+		file, err = downloadFile(backupFilePath, w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 	defer file.Close()
 
@@ -32,4 +38,13 @@ func DownloadFileHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+}
+
+func downloadFile(filePath string, w http.ResponseWriter) (*os.File, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open file: %w", err)
+	}
+
+	return file, nil
 }
