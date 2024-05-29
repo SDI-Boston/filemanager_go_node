@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      #- "50051-50060"
+      - "8080"   
+    volumes:
+      - .:/app
+      - nfsVolume:/mnt/nfs
+      - nfsBackupVolume:/mnt/nfs_backup
+    networks:
+      - node.network
+    deploy:
+        replicas: 3
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on: 
+      - node
+    ports: 
+      - "3000:3000"
+      - "5000:5000"
+    networks:
+      - node.network
+
+
+volumes:
+  nfsVolume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=127.0.0.1,rw,nfsvers=4
+      device: ":/var/nfs/files"
+  nfsBackupVolume:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=127.0.0.1,rw,nfsvers=4
+      device: ":/var/nfs/files_backup"
+
+networks: 
+  node.network:

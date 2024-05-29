@@ -1,0 +1,21 @@
+syntax = "proto3";
+package proto;
+
+option go_package = "github.com/SDI-Boston/filemanager_go_node/proto";
+
+message FileUploadRequest {
+    string file_id = 1;
+    string owner_id = 2;
+    bytes binary_file = 3;
+    string file_hash = 4;
+    string file_name = 5;
+}
+
+message FileUploadResponse {
+    string file_id = 1;
+    repeated string urls = 2;
+}
+
+service FileService {
+    rpc Upload(stream FileUploadRequest) returns (FileUploadResponse);
+}
